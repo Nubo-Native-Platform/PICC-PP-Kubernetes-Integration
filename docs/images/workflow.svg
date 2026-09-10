@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" width="100%" height="100%">
+  <defs>
+    <style>
+      .title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 20px; font-weight: bold; fill: #1e293b; }
+      .subtitle { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 13px; fill: #64748b; }
+      .box-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: bold; fill: #0f172a; }
+      .box-desc { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 11px; fill: #475569; }
+      .step-num { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: bold; fill: #ffffff; }
+      .flow-label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 600; fill: #2563eb; }
+    </style>
+    <marker id="wf-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#3b82f6" />
+    </marker>
+    <marker id="wf-arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#16a34a" />
+    </marker>
+    <filter id="wf-shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="620" rx="16" fill="#f8fafc"/>
+  <rect x="1" y="1" width="998" height="618" rx="15" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+
+  <!-- Title -->
+  <text x="40" y="45" class="title">Interactive WebSocket Pod Terminal &amp; Resource Lifecycle Workflow</text>
+  <text x="40" y="68" class="subtitle">Detailed Execution Sequence from In-Browser xterm.js to Pod Exec Stream</text>
+
+  <!-- Lane 1: Browser UI (xterm.js) -->
+  <rect x="40" y="105" width="200" height="475" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#wf-shadow)"/>
+  <rect x="40" y="105" width="200" height="34" rx="10" fill="#3b82f6"/>
+  <rect x="40" y="127" width="200" height="12" fill="#3b82f6"/>
+  <text x="55" y="128" fill="#ffffff" font-family="sans-serif" font-size="12" font-weight="bold">BROWSER / CLIENT</text>
+
+  <rect x="55" y="160" width="170" height="70" rx="8" fill="#f1f5f9" stroke="#e2e8f0"/>
+  <text x="68" y="185" class="box-title">1. GET /terminal</text>
+  <text x="68" y="205" class="box-desc">UI renders xterm.js,</text>
+  <text x="68" y="220" class="box-desc">FitAddon &amp; WebLinks</text>
+
+  <rect x="55" y="270" width="170" height="85" rx="8" fill="#eff6ff" stroke="#93c5fd"/>
+  <text x="68" y="295" class="box-title">2. WS Connect</text>
+  <text x="68" y="315" class="box-desc">ws://host/terminal/exec</text>
+  <text x="68" y="330" class="box-desc">?envName=dev&amp;pod=app</text>
+  <text x="68" y="345" class="box-desc">Upgrades to WebSocket</text>
+
+  <rect x="55" y="395" width="170" height="75" rx="8" fill="#f0fdf4" stroke="#86efac"/>
+  <text x="68" y="420" class="box-title">3. TTY Interaction</text>
+  <text x="68" y="440" class="box-desc">User types keystrokes,</text>
+  <text x="68" y="455" class="box-desc">terminal paints ANSI</text>
+
+  <!-- Lane 2: PICC-PP-Kubernetes-Integration -->
+  <rect x="280" y="105" width="440" height="475" rx="10" fill="#ffffff" stroke="#3b82f6" stroke-width="2" filter="url(#wf-shadow)"/>
+  <rect x="280" y="105" width="440" height="34" rx="10" fill="#1d4ed8"/>
+  <rect x="280" y="127" width="440" height="12" fill="#1d4ed8"/>
+  <text x="295" y="128" fill="#ffffff" font-family="sans-serif" font-size="12" font-weight="bold">PICC-PP-KUBERNETES-INTEGRATION SERVICE</text>
+
+  <!-- Step 1 in Service -->
+  <rect x="300" y="160" width="400" height="75" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="315" y="185" class="box-title">NnpK8sIntgUIController</text>
+  <text x="315" y="205" class="box-desc">Resolves ${VAR.BASE.NNP.DOMAIN} and serves Thymeleaf template</text>
+  <text x="315" y="222" class="box-desc" fill="#2563eb">Supplies pod, container, and target gateway websocket endpoint</text>
+
+  <!-- Step 2 in Service -->
+  <rect x="300" y="255" width="400" height="105" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="315" y="278" class="box-title" fill="#1e40af">TerminalWebSocketHandler::afterConnectionEstablished</text>
+  <text x="315" y="298" class="box-desc">&bull; Fetches NnpEnvironment from Cache (or NnpService REST call)</text>
+  <text x="315" y="315" class="box-desc">&bull; Builds dynamic Fabric8 client with adminK8sNsToken</text>
+  <text x="315" y="332" class="box-desc">&bull; Attaches WebSocketOutputStream &amp; TerminalListener to ExecWatch</text>
+  <text x="315" y="348" class="box-desc" fill="#16a34a">Executes: [ -x /bin/bash ] &amp;&amp; exec /bin/bash || exec /bin/sh</text>
+
+  <!-- Step 3 in Service -->
+  <rect x="300" y="380" width="400" height="95" rx="8" fill="#f0fdf4" stroke="#bbf7d0"/>
+  <text x="315" y="403" class="box-title" fill="#166534">Bi-Directional Streaming Engine</text>
+  <text x="315" y="423" class="box-desc">&bull; handleTextMessage(): stdin.write(payload.getBytes(UTF_8))</text>
+  <text x="315" y="440" class="box-desc">&bull; WebSocketOutputStream: flushes stdout/stderr bytes to session</text>
+  <text x="315" y="458" class="box-desc">&bull; ConcurrentHashMap tracks active ExecWatch instances by SessionID</text>
+
+  <!-- Step 4 Cleanup -->
+  <rect x="300" y="490" width="400" height="70" rx="8" fill="#fff7ed" stroke="#fed7aa"/>
+  <text x="315" y="513" class="box-title" fill="#9a3412">afterConnectionClosed() Teardown</text>
+  <text x="315" y="533" class="box-desc">Closes ExecWatch, terminates remote TTY process, flushes buffers,</text>
+  <text x="315" y="548" class="box-desc">and removes session from memory map to prevent resource leaks</text>
+
+  <!-- Lane 3: Kubernetes API & Pod -->
+  <rect x="760" y="105" width="200" height="475" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#wf-shadow)"/>
+  <rect x="760" y="105" width="200" height="34" rx="10" fill="#334155"/>
+  <rect x="760" y="127" width="200" height="12" fill="#334155"/>
+  <text x="775" y="128" fill="#ffffff" font-family="sans-serif" font-size="12" font-weight="bold">TARGET K8S POD</text>
+
+  <rect x="775" y="270" width="170" height="85" rx="8" fill="#f8fafc" stroke="#3b82f6"/>
+  <text x="788" y="295" class="box-title">Pod Exec API</text>
+  <text x="788" y="315" class="box-desc">Kubelet allocates</text>
+  <text x="788" y="330" class="box-desc">pty / tty slave device</text>
+  <text x="788" y="345" class="box-desc">Spawns bash / sh</text>
+
+  <rect x="775" y="395" width="170" height="75" rx="8" fill="#f0fdf4" stroke="#86efac"/>
+  <text x="788" y="420" class="box-title">Container Process</text>
+  <text x="788" y="440" class="box-desc">Executes commands,</text>
+  <text x="788" y="455" class="box-desc">streams stdout/stderr</text>
+
+  <!-- Arrows -->
+  <line x1="225" y1="195" x2="300" y2="195" stroke="#3b82f6" stroke-width="2" marker-end="url(#wf-arrow)"/>
+  <line x1="225" y1="310" x2="300" y2="310" stroke="#3b82f6" stroke-width="2" marker-end="url(#wf-arrow)"/>
+  <line x1="700" y1="310" x2="775" y2="310" stroke="#3b82f6" stroke-width="2" marker-end="url(#wf-arrow)"/>
+  <line x1="225" y1="430" x2="300" y2="430" stroke="#16a34a" stroke-width="2" marker-end="url(#wf-arrow-green)"/>
+  <line x1="700" y1="430" x2="775" y2="430" stroke="#16a34a" stroke-width="2" marker-end="url(#wf-arrow-green)"/>
+
+</svg>

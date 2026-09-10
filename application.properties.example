@@ -1,0 +1,45 @@
+# ==============================================================================
+# PICC-PP-Kubernetes-Integration - Example Application Properties
+# ==============================================================================
+# Copy this file to 'application.properties' or 'application-local.properties'
+# for local custom development.
+# ==============================================================================
+
+spring.application.name=PICC-PP-Kubernetes-Integration
+server.port=8080
+
+# Virtual Threads (Java 21)
+spring.threads.virtual.enabled=true
+
+# Spring Cloud Config (disabled by default for local development)
+spring.cloud.config.enabled=false
+
+# Kubernetes Cluster Configuration
+k8s.url=https://kubernetes.default.svc
+k8s.master.token=
+
+# NNP Dashboard Configuration
+nnp.dash.baseurl=http://localhost:8082
+VAR.BASE.NNP.DOMAIN=localhost:8080
+
+# In-Memory Cache Configuration
+spring.cache.type=simple
+spring.cache.cache-names=nnp-environment
+
+# Thymeleaf Template Engine Configuration
+spring.thymeleaf.prefix=classpath:/templates/
+spring.thymeleaf.suffix=.html
+spring.thymeleaf.mode=HTML
+spring.thymeleaf.cache=false
+
+# Swagger / OpenAPI Documentation
+springdoc.api-docs.path=/v3/api-docs
+springdoc.swagger-ui.path=/swagger-ui.html
+springdoc.swagger-ui.enabled=true
+springdoc.swagger-ui.operations-sorter=alpha
+springdoc.swagger-ui.tags-sorter=alpha
+springdoc.swagger-ui.try-it-out-enabled=true
+
+# Actuator Endpoints
+management.endpoints.web.exposure.include=health,info,metrics
+management.endpoint.health.show-details=always

@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" width="100%" height="100%">
+  <defs>
+    <style>
+      .title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 20px; font-weight: bold; fill: #1e293b; }
+      .subtitle { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 13px; fill: #64748b; }
+      .box-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #0f172a; }
+      .box-desc { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 12px; fill: #475569; }
+      .badge-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 600; fill: #ffffff; }
+      .arrow-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #334155; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#475569" />
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb" />
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#7c3aed" />
+    </marker>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1000" height="620" rx="16" fill="#f8fafc"/>
+  <rect x="1" y="1" width="998" height="618" rx="15" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+
+  <!-- Header -->
+  <text x="40" y="45" class="title">Kubernetes Integration Service - System Architecture</text>
+  <text x="40" y="68" class="subtitle">Platform Infrastructure &amp; Core Components (PICC) &bull; Nubo Native Platform (NNP)</text>
+
+  <!-- Zone 1: Clients & Consoles (Left) -->
+  <rect x="40" y="100" width="220" height="480" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="40" y="100" width="220" height="36" rx="12" fill="#3b82f6"/>
+  <rect x="40" y="124" width="220" height="12" fill="#3b82f6"/>
+  <text x="55" y="123" class="badge-text">CLIENT CONSUMERS &amp; PORTALS</text>
+
+  <!-- Client 1: Microservices -->
+  <rect x="55" y="155" width="190" height="65" rx="8" fill="#f1f5f9" stroke="#e2e8f0"/>
+  <text x="70" y="180" class="box-title">NNP Microservices</text>
+  <text x="70" y="200" class="box-desc">Automated deployment teardowns</text>
+
+  <!-- Client 2: Web Portals / Dashboard -->
+  <rect x="55" y="235" width="190" height="65" rx="8" fill="#f1f5f9" stroke="#e2e8f0"/>
+  <text x="70" y="260" class="box-title">NNP Web Dashboard</text>
+  <text x="70" y="280" class="box-desc">Real-time pod resource monitor</text>
+
+  <!-- Client 3: Web Terminal UI -->
+  <rect x="55" y="315" width="190" height="65" rx="8" fill="#f1f5f9" stroke="#e2e8f0"/>
+  <text x="70" y="340" class="box-title">Interactive Terminal UI</text>
+  <text x="70" y="360" class="box-desc">xterm.js in-browser shell session</text>
+
+  <!-- Client 4: Swagger UI / Admin Tools -->
+  <rect x="55" y="395" width="190" height="65" rx="8" fill="#f1f5f9" stroke="#e2e8f0"/>
+  <text x="70" y="420" class="box-title">Swagger UI &amp; OpenAPI</text>
+  <text x="70" y="440" class="box-desc">Interactive REST verification</text>
+
+  <!-- Client 5: Prometheus / Actuator -->
+  <rect x="55" y="475" width="190" height="65" rx="8" fill="#f1f5f9" stroke="#e2e8f0"/>
+  <text x="70" y="500" class="box-title">Observability Mesh</text>
+  <text x="70" y="520" class="box-desc">Spring Actuator health probes</text>
+
+  <!-- Zone 2: Kubernetes Integration Service (Middle) -->
+  <rect x="300" y="100" width="380" height="480" rx="12" fill="#ffffff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="300" y="100" width="380" height="36" rx="12" fill="#1d4ed8"/>
+  <rect x="300" y="124" width="380" height="12" fill="#1d4ed8"/>
+  <text x="315" y="123" class="badge-text">PICC-PP-KUBERNETES-INTEGRATION SERVICE</text>
+
+  <!-- Controllers & Handlers Layer -->
+  <rect x="315" y="150" width="350" height="105" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="325" y="172" class="box-title" fill="#1e40af">REST Controllers &amp; WebSocket Endpoints</text>
+  <rect x="325" y="185" width="165" height="60" rx="6" fill="#ffffff" stroke="#93c5fd"/>
+  <text x="333" y="205" class="box-title" font-size="12">NnpK8sIntgRestController</text>
+  <text x="333" y="222" class="box-desc" font-size="11">Metrics &amp; Resource Teardowns</text>
+  <text x="333" y="235" class="box-desc" font-size="10" fill="#3b82f6">/pods/details, /delete/*</text>
+
+  <rect x="495" y="185" width="160" height="60" rx="6" fill="#ffffff" stroke="#93c5fd"/>
+  <text x="502" y="205" class="box-title" font-size="12">TerminalWebSocketHandler</text>
+  <text x="502" y="222" class="box-desc" font-size="11">Bi-directional TTY Stream</text>
+  <text x="502" y="235" class="box-desc" font-size="10" fill="#3b82f6">ws://.../terminal/exec</text>
+
+  <!-- Service Orchestration Layer -->
+  <rect x="315" y="270" width="350" height="120" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="325" y="292" class="box-title">Core Service &amp; Query Orchestration</text>
+  
+  <rect x="325" y="305" width="165" height="72" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="333" y="325" class="box-title" font-size="12">K8sIntgQuerySvc</text>
+  <text x="333" y="342" class="box-desc" font-size="11">Pod Metrics &amp; Topology</text>
+  <text x="333" y="358" class="box-desc" font-size="10" fill="#64748b">NanoCores &amp; Byte Scaling</text>
+
+  <rect x="495" y="305" width="160" height="72" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="502" y="325" class="box-title" font-size="12">K8sIntgCommandSvc</text>
+  <text x="502" y="342" class="box-desc" font-size="11">Cascade Resource Deletion</text>
+  <text x="502" y="358" class="box-desc" font-size="10" fill="#64748b">Pods, Svcs, Configs, PVCs</text>
+
+  <!-- Client Factory & Caching Layer -->
+  <rect x="315" y="405" width="350" height="160" rx="8" fill="#f0fdf4" stroke="#bbf7d0"/>
+  <text x="325" y="427" class="box-title" fill="#166534">Fabric8 Client Factory &amp; Environment Cache</text>
+
+  <rect x="325" y="440" width="165" height="110" rx="6" fill="#ffffff" stroke="#86efac"/>
+  <text x="333" y="460" class="box-title" font-size="12">K8sIntgClientFactory</text>
+  <text x="333" y="478" class="box-desc" font-size="11">Dynamic OAuth2 Bearer</text>
+  <text x="333" y="494" class="box-desc" font-size="11">In-Cluster &amp; Remote API</text>
+  <text x="333" y="512" class="box-desc" font-size="10" fill="#16a34a">Fabric8 KubernetesClient</text>
+
+  <rect x="495" y="440" width="160" height="110" rx="6" fill="#ffffff" stroke="#86efac"/>
+  <text x="502" y="460" class="box-title" font-size="12">NnpService Cache</text>
+  <text x="502" y="478" class="box-desc" font-size="11">Environment Metadata</text>
+  <text x="502" y="494" class="box-desc" font-size="11">Namespace SA Tokens</text>
+  <text x="502" y="512" class="box-desc" font-size="10" fill="#16a34a">@Cacheable("nnp-env")</text>
+
+  <!-- Zone 3: External Target Systems (Right) -->
+  <rect x="720" y="100" width="240" height="480" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="720" y="100" width="240" height="36" rx="12" fill="#334155"/>
+  <rect x="720" y="124" width="240" height="12" fill="#334155"/>
+  <text x="735" y="123" class="badge-text">EXTERNAL TARGET SERVICES</text>
+
+  <!-- Target 1: Target Kubernetes Cluster -->
+  <rect x="735" y="150" width="210" height="230" rx="8" fill="#f8fafc" stroke="#3b82f6" stroke-width="1.5"/>
+  <rect x="735" y="150" width="210" height="28" rx="8" fill="#2563eb"/>
+  <rect x="735" y="168" width="210" height="10" fill="#2563eb"/>
+  <text x="745" y="169" class="badge-text">KUBERNETES CLUSTER</text>
+  <text x="745" y="198" class="box-title" font-size="13">Control Plane &amp; Nodes</text>
+  <text x="745" y="218" class="box-desc">&bull; /apis/metrics.k8s.io</text>
+  <text x="745" y="236" class="box-desc">&bull; /apis/apps/v1 (Deployments)</text>
+  <text x="745" y="254" class="box-desc">&bull; /api/v1 (Pods, Svcs, Configs)</text>
+  <text x="745" y="272" class="box-desc">&bull; /api/v1/namespaces/{ns}/exec</text>
+  <text x="745" y="294" class="box-desc" font-size="11" fill="#2563eb">Bi-directional WebSocket SPDY</text>
+  <text x="745" y="312" class="box-desc" font-size="11" fill="#64748b">Port: 443 / 6443 (HTTPS)</text>
+
+  <!-- Target 2: NNP Dashboard Backend -->
+  <rect x="735" y="405" width="210" height="160" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="1.5"/>
+  <rect x="735" y="405" width="210" height="28" rx="8" fill="#7c3aed"/>
+  <rect x="735" y="423" width="210" height="10" fill="#7c3aed"/>
+  <text x="745" y="424" class="badge-text">NNP DASHBOARD BACKEND</text>
+  <text x="745" y="455" class="box-title" font-size="13">Portal Manifest Service</text>
+  <text x="745" y="475" class="box-desc">&bull; GET /env/read/v3</text>
+  <text x="745" y="493" class="box-desc">&bull; Namespace token mapping</text>
+  <text x="745" y="511" class="box-desc">&bull; Multi-tenant environment metadata</text>
+  <text x="745" y="533" class="box-desc" font-size="11" fill="#7c3aed">Spring RestClient / HTTP</text>
+
+  <!-- Connectors -->
+  <!-- Left to Middle -->
+  <line x1="245" y1="205" x2="315" y2="205" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <line x1="245" y1="345" x2="495" y2="230" stroke="#2563eb" stroke-width="2" stroke-dasharray="4" marker-end="url(#arrow-blue)"/>
+
+  <!-- Middle to Right -->
+  <line x1="490" y1="480" x2="735" y2="260" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <line x1="655" y1="215" x2="735" y2="300" stroke="#2563eb" stroke-width="2" stroke-dasharray="4" marker-end="url(#arrow-blue)"/>
+  <line x1="655" y1="495" x2="735" y2="485" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+</svg>

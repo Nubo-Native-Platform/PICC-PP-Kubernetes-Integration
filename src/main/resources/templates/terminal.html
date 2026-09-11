@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal - <span th:text="${pod}"></span></title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-web-links@0.9.0/lib/xterm-addon-web-links.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1e1e1e;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #2d2d30;
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-info span {
+            padding: 5px 12px;
+            background: #3e3e42;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4caf50;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.disconnected {
+            background: #f44336;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .back-btn {
+            padding: 8px 16px;
+            background: #007acc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            background: #005a9e;
+        }
+
+        #terminal-container {
+            width: 100%;
+            height: calc(100vh - 60px);
+            padding: 10px;
+        }
+
+        #terminal {
+            height: 100%;
+            width: 100%;
+        }
+
+        .error-message {
+            color: #f44336;
+            padding: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="header-info">
+        <span>📦 <strong>Environment Name :</strong> <span th:text="${envName}"></span></span>
+        <span>🎯 <strong>Pod:</strong> <span th:text="${pod}"></span></span>
+        <span th:if="${container != null and container != ''}" th:text="'📦 Container: ' + ${container}"></span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 20px;">
+        <div class="status">
+            <div class="status-indicator" id="statusIndicator"></div>
+            <span id="statusText">Connecting...</span>
+        </div>
+        <a href="/" class="back-btn">← Back</a>
+    </div>
+</div>
+
+<div id="terminal-container">
+    <div id="terminal"></div>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const envName = /*[[${envName}]]*/ '';
+    const pod = /*[[${pod}]]*/ '';
+    const container = /*[[${container}]]*/ '';
+    const host = /*[[${host}]]*/ '';
+    /*]]>*/
+
+    // Initialize xterm.js
+    const term = new Terminal({
+        cursorBlink: true,
+        fontSize: 14,
+        fontFamily: 'Menlo, Monaco, "Courier New", monospace',
+        theme: {
+            background: '#1e1e1e',
+            foreground: '#d4d4d4',
+            cursor: '#d4d4d4',
+            black: '#000000',
+            red: '#cd3131',
+            green: '#0dbc79',
+            yellow: '#e5e510',
+            blue: '#2472c8',
+            magenta: '#bc3fbc',
+            cyan: '#11a8cd',
+            white: '#e5e5e5',
+            brightBlack: '#666666',
+            brightRed: '#f14c4c',
+            brightGreen: '#23d18b',
+            brightYellow: '#f5f543',
+            brightBlue: '#3b8eea',
+            brightMagenta: '#d670d6',
+            brightCyan: '#29b8db',
+            brightWhite: '#e5e5e5'
+        },
+        allowProposedApi: true
+    });
+
+    // Add fit addon
+    const fitAddon = new FitAddon.FitAddon();
+    term.loadAddon(fitAddon);
+
+    // Add web links addon
+    const webLinksAddon = new WebLinksAddon.WebLinksAddon();
+    term.loadAddon(webLinksAddon);
+
+    // Open terminal
+    term.open(document.getElementById('terminal'));
+    fitAddon.fit();
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        fitAddon.fit();
+    });
+
+    // WebSocket connection
+    const wsUrl = `wss://${host}/k8s-intg-pub/terminal/websocket?envName=${encodeURIComponent(envName)}&pod=${encodeURIComponent(pod)}${container ? '&container=' + encodeURIComponent(container) : ''}`;
+
+    const statusIndicator = document.getElementById('statusIndicator');
+    const statusText = document.getElementById('statusText');
+
+    let socket;
+
+    function connect() {
+        socket = new WebSocket(wsUrl);
+
+        socket.onopen = function() {
+            statusIndicator.classList.remove('disconnected');
+            statusText.textContent = 'Connected';
+            term.write('\r\n*** Connected to pod terminal ***\r\n\r\n');
+        };
+
+        socket.onmessage = function(event) {
+            term.write(event.data);
+        };
+
+        socket.onerror = function(error) {
+            console.error('WebSocket error:', error);
+            statusIndicator.classList.add('disconnected');
+            statusText.textContent = 'Connection Error';
+        };
+
+        socket.onclose = function() {
+            statusIndicator.classList.add('disconnected');
+            statusText.textContent = 'Disconnected';
+            term.write('\r\n\r\n*** Connection closed ***\r\n');
+        };
+    }
+
+    // Send input to WebSocket
+    term.onData(data => {
+        if (socket && socket.readyState === WebSocket.OPEN) {
+            socket.send(data);
+        }
+    });
+
+    // Handle paste
+    term.onBinary(data => {
+        if (socket && socket.readyState === WebSocket.OPEN) {
+            socket.send(data);
+        }
+    });
+
+    // Connect on load
+    connect();
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+        if (socket) {
+            socket.close();
+        }
+    });
+</script>
+</body>
+</html>
